@@ -22,19 +22,19 @@
         singleMode: false
     });
 
-    var initPort = Cla.ui.numberField({
+    var initPort = Cla.ui.textField({
         name: 'initPort',
         value: params.data.initPort || '1',
         fieldLabel: 'Starting Port',
         allowBlank: true,
-        maxValue: '65535'
+        maxLength: 5
     });
-    var endPort = Cla.ui.numberField({
+    var endPort = Cla.ui.textField({
         name: 'endPort',
         value: params.data.endPort || '65535',
         fieldLabel: 'Finishing Port',
         allowBlank: true,
-        maxValue: '65535'
+        maxLength: 5
     });
 
     return [

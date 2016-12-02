@@ -30,5 +30,7 @@ The parameters available for this service are:
 - **Starting port -** The starting port to begin the scanner. If you let it empty, it will take port 1 as default.
 - **Finishing port -** The last port you to scan. If you let it empty, it will take port 65535 as default.
 
+NOTE: UPD scan runs under sudo and needs to be configured so it doesn't ask for the password.
+
 The server will return a HASH structure with two arrays for the ports found for TCP and for UDP. The keys for each port array in the HASH will be `tcp` and `udp`.
 If no open ports were found, the array will be empty.

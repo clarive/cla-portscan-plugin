@@ -45,8 +45,7 @@ reg.register('service.port.scan', {
         };
 
         var scanPorts = function(scanCommand, type) {
-            //var localhost = ci.getClass('GenericServer',);
-            var local = ci.build('GenericServer',{
+            var local = ci.build('GenericServer', {
                 name: "localhost",
                 hostname: "localhost"
             });
@@ -55,10 +54,10 @@ reg.register('service.port.scan', {
             var response = agent.tuple().output;
             var ports = parseNmapOutput(type, response);
 
-            if(agent.tuple().rc != 0){
-                throw new Error("Error with nmap. " + response);
-            }
-            else if (ports.length == 0) {
+            if (agent.tuple().rc != 0) {
+                log.error("Error with nmap: " + response, response);
+                throw new Error("Error with nmap: " + response);
+            } else if (ports.length == 0) {
                 log.error("No open ports in the server for " + type + ' ', response);
             } else {
                 log.info(ports.length + " Port(s) found for " + type + ' ', response);
@@ -70,6 +69,7 @@ reg.register('service.port.scan', {
             log.error("Starting Port is bigger than finishing Port. ");
             throw new Error("Starting Port is bigger than finishing Port. ");
         }
+
 
         var portsScanned = {};
         var scanCommand;
