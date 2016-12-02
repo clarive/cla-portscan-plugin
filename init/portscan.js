@@ -45,8 +45,8 @@ reg.register('service.port.scan', {
         };
 
         var scanPorts = function(scanCommand, type) {
-            var localhost = ci.getClass('GenericServer');
-            var local = new localhost({
+            //var localhost = ci.getClass('GenericServer',);
+            var local = ci.build('GenericServer',{
                 name: "localhost",
                 hostname: "localhost"
             });
@@ -55,7 +55,10 @@ reg.register('service.port.scan', {
             var response = agent.tuple().output;
             var ports = parseNmapOutput(type, response);
 
-            if (ports.length == 0) {
+            if(agent.tuple().rc != 0){
+                throw new Error("Error with nmap. " + response);
+            }
+            else if (ports.length == 0) {
                 log.error("No open ports in the server for " + type + ' ', response);
             } else {
                 log.info(ports.length + " Port(s) found for " + type + ' ', response);
@@ -68,18 +71,18 @@ reg.register('service.port.scan', {
             throw new Error("Starting Port is bigger than finishing Port. ");
         }
 
-        var portsScaneed = {};
+        var portsScanned = {};
         var scanCommand;
         if (config.portType.indexOf('TCP') != -1) {
             scanCommand = 'nmap -sT' + scanRangeServer;
             var tcpPorts = scanPorts(scanCommand, "TCP");
-            portsScaneed.tcp = tcpPorts;
+            portsScanned.tcp = tcpPorts;
         }
         if (config.portType.indexOf('UDP') != -1) {
-            scanCommand = 'sudo nmap -sU' + scanRangeServer;
+            scanCommand = 'sudo -n nmap -sU' + scanRangeServer;
             var udpPorts = scanPorts(scanCommand, "UDP");
-            portsScaneed.udp = udpPorts;
+            portsScanned.udp = udpPorts;
         }
-        return portsScaneed;
+        return portsScanned;
     }
 });
