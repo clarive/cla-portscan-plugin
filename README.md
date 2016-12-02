@@ -10,7 +10,7 @@ To be able to use the plugin correctly you must have [`nmap`](https://nmap.org/b
 ## Installing
 
 To install the plugin place the cla-portscan-plugin folder inside `CLARIVE_BASE/plugins`
-directory in Clarive's platform.
+directory in Clarive's instance.
 
 ## How to use
 
