@@ -10,8 +10,8 @@ reg.register('service.port.scan', {
         var log = require('cla/log');
         var fs = require('cla/fs');
 
-        var initPort = config.initPort
-        var endPort = config.endPort
+        var initPort = Number(config.initPort);
+        var endPort = Number(config.endPort);
         var scanServer = ci.findOne({
             mid: config.server + ''
         });
@@ -65,6 +65,18 @@ reg.register('service.port.scan', {
             return ports;
         };
 
+        if (initPort == NaN || endPort == NaN) {
+            log.error("Uncorrect ports: " + initPort + " " + endPort);
+            throw new Error("Uncorrect ports: " + initPort + " " + endPort);
+        }
+        if (initPort > 65535) {
+            log.error("Starting port can't overpass 65535: " + initPort);
+            throw new Error("Starting port can't overpass 65535: " + initPort);
+        }
+        if (endPort > 65535) {
+            log.error("Finishing port can't overpass 65535: " + endPort);
+            throw new Error("Finishing port can't overpass 65535: " + endPort);
+        }
         if (initPort > endPort) {
             log.error("Starting Port is bigger than finishing Port. ");
             throw new Error("Starting Port is bigger than finishing Port. ");

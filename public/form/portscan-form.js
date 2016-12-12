@@ -26,15 +26,13 @@
         name: 'initPort',
         value: params.data.initPort || '1',
         fieldLabel: 'Starting Port',
-        allowBlank: true,
-        maxLength: 5
+        allowBlank: true
     });
     var endPort = Cla.ui.textField({
         name: 'endPort',
         value: params.data.endPort || '65535',
         fieldLabel: 'Finishing Port',
-        allowBlank: true,
-        maxLength: 5
+        allowBlank: true
     });
 
     return [
