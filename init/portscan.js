@@ -15,6 +15,9 @@ reg.register('service.port.scan', {
         var scanServer = ci.findOne({
             mid: config.server + ''
         });
+        if (!scanServer){
+            log.fatal("Server CI doesn't exist");
+        }
         var scanRangeServer = ' -p ' + initPort + '-' + endPort + ' ' + scanServer.hostname;
 
         function parseNmapOutput(type, output) {
