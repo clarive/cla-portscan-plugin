@@ -3,7 +3,7 @@
 
 Port Scan Plugin is designed check open ports on a remote server.
 
-## Requeriments
+## Requirements
 
 To be able to use the plugin correctly you must have [`nmap`](https://nmap.org/book/install.html) installed in your Clarive's instance.
 
