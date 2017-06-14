@@ -13,8 +13,8 @@
         name: 'portType',
         fieldLabel: 'Port Type',
         data: [
-            ['TCP'],
-            ['UDP'],
+            ['TCP', 'TCP'],
+            ['UDP', 'UDP'],
         ],
         value: params.data.portType || 'TCP',
         allowBlank: false,
