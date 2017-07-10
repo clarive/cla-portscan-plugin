@@ -1,7 +1,7 @@
 var reg = require("cla/reg");
 
 reg.register('service.port.scan', {
-    name: 'Open Ports Scanner',
+    name: _('Open Ports Scanner'),
     icon: '/plugin/cla-portscan-plugin/icon/portscan.svg',
     form: '/plugin/cla-portscan-plugin/form/portscan-form.js',
     handler: function(ctx, config) {
@@ -16,19 +16,18 @@ reg.register('service.port.scan', {
             mid: config.server + ''
         });
         if (!scanServer){
-            log.fatal("Server CI doesn't exist");
+            log.fatal(_("Server CI doesn't exist"));
         }
         var scanRangeServer = ' -p ' + initPort + '-' + endPort + ' ' + scanServer.hostname;
 
         function parseNmapOutput(type, output) {
             if (output.lastIndexOf('Failed to resolve') > 0 || output.lastIndexOf('Note: Host seems down.') > 0) {
-                log.error("Unable to connect to server. It might be down or doesnt exist. ", output);
-                throw new Error("Unable to connect to server. It might be down or doesnt exist. " + output);
+                log.fatal(_("Unable to connect to server. It might be down or doesnt exist. "), output);
             }
 
             var initIndex = output.lastIndexOf(' SERVICE\n');
             if (initIndex < 0) {
-                log.error("No open ports in the server for " + type + ' ', output);
+                log.error(_("No open ports in the server for ") + type + ' ', output);
                 return [];
             }
             var lasttIndex = output.lastIndexOf('Nmap done:');
@@ -58,31 +57,26 @@ reg.register('service.port.scan', {
             var ports = parseNmapOutput(type, response);
 
             if (agent.tuple().rc != 0) {
-                log.error("Error with nmap: " + response, response);
-                throw new Error("Error with nmap: " + response);
+                log.fatal(_("Error with nmap: "), response);
             } else if (ports.length == 0) {
-                log.error("No open ports in the server for " + type + ' ', response);
+                log.error(_("No open ports in the server for ") + type + ' ', response);
             } else {
-                log.info(ports.length + " Port(s) found for " + type + ' ', response);
+                log.info(ports.length + _(" Port(s) found for ") + type + ' ', response);
             }
             return ports;
         };
 
         if (initPort == NaN || endPort == NaN) {
-            log.error("Uncorrect ports: " + initPort + " " + endPort);
-            throw new Error("Uncorrect ports: " + initPort + " " + endPort);
+            log.fatal(_("Uncorrect ports: ") + initPort + " " + endPort);
         }
         if (initPort > 65535) {
-            log.error("Starting port can't overpass 65535: " + initPort);
-            throw new Error("Starting port can't overpass 65535: " + initPort);
+            log.fatal(_("Starting port can't overpass 65535: ") + initPort);
         }
         if (endPort > 65535) {
-            log.error("Finishing port can't overpass 65535: " + endPort);
-            throw new Error("Finishing port can't overpass 65535: " + endPort);
+            log.fatal(_("Finishing port can't overpass 65535: ") + endPort);
         }
         if (initPort > endPort) {
-            log.error("Starting Port is bigger than finishing Port. ");
-            throw new Error("Starting Port is bigger than finishing Port. ");
+            log.error(_("Starting Port is bigger than finishing Port. "));
         }
 
 

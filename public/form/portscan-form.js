@@ -4,17 +4,17 @@
         name: 'server',
         value: params.data.server || '',
         class: 'generic_server',
-        fieldLabel: 'Server',
+        fieldLabel: _('Server'),
         allowBlank: false,
         with_vars: 1
     });
 
     var portType = Cla.ui.comboBox({
         name: 'portType',
-        fieldLabel: 'Port Type',
+        fieldLabel: _('Port Type'),
         data: [
-            ['TCP', 'TCP'],
-            ['UDP', 'UDP'],
+            ['TCP', _('TCP')],
+            ['UDP', _('UDP')],
         ],
         value: params.data.portType || 'TCP',
         allowBlank: false,
@@ -25,13 +25,13 @@
     var initPort = Cla.ui.textField({
         name: 'initPort',
         value: params.data.initPort || '1',
-        fieldLabel: 'Starting Port',
+        fieldLabel: _('Starting Port'),
         allowBlank: true
     });
     var endPort = Cla.ui.textField({
         name: 'endPort',
         value: params.data.endPort || '65535',
-        fieldLabel: 'Finishing Port',
+        fieldLabel: _('Finishing Port'),
         allowBlank: true
     });
 

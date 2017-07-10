@@ -1,0 +1,63 @@
+#: init/portscan.js
+msgid "Open Ports Scanner"
+msgstr "Escáner de puertos abiertos"
+
+#: init/portscan.js
+msgid "Server CI doesn't exist"
+msgstr "El CI de servidor no existe"
+
+#: init/portscan.js
+msgid "Unable to connect to server. It might be down or doesnt exist. "
+msgstr "No ha sido capaz de conectarse al servidor. Quizás esté caido o no existe. "
+
+#: init/portscan.js
+msgid "No open ports in the server for "
+msgstr "No hay puertos abiertos en el servidor para "
+
+#: init/portscan.js
+msgid "Error with nmap: "
+msgstr "Error con el nmap: "
+
+#: init/portscan.js
+msgid " Port(s) found for "
+msgstr " Puerto(s) encontrado(s) para "
+
+#: init/portscan.js
+msgid "Uncorrect ports: "
+msgstr "Puertos incorrectos: "
+
+#: init/portscan.js
+msgid "Starting port can't overpass 65535: "
+msgstr "El puerto de inicio no puede sobrepasar 65535: "
+
+#: init/portscan.js
+msgid "Finishing port can't overpass 65535: "
+msgstr "El puerto final no puede sobrepasar 65535: "
+
+#: init/portscan.js
+msgid "Starting Port is bigger than finishing Port. "
+msgstr "El puerto inicial es mayor que el final. "
+
+#: public/form/portscan-form.js
+msgid "Server"
+msgstr "Servidor"
+
+#: public/form/portscan-form.js
+msgid "Port Type"
+msgstr "Tipo de puerto"
+
+#: public/form/portscan-form.js
+msgid "TCP"
+msgstr "TCP"
+
+#: public/form/portscan-form.js
+msgid "UDP"
+msgstr "UDP"
+
+#: public/form/portscan-form.js
+msgid "Starting Port"
+msgstr "Puerto de inicio"
+
+#: public/form/portscan-form.js
+msgid "Finishing Port"
+msgstr "Puerto final"
