@@ -1,0 +1,9 @@
+name: Clarive Port Scan Plugin
+description: Port Scan Plugin is designed to check open ports on a remote server.
+version: 1.0
+icon: https://github.com/clarive/cla-portscan-plugin/public/icon/portscan.svg
+url: https://github.com/clarive/cla-portscan-plugin
+requires:
+  - clarive_version: 6.8 <= version
+dependencies:
+  - cla-portscan-plugin
