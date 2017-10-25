@@ -1,4 +1,5 @@
 (function(params) {
+    var data = params.data;
 
     var server = Cla.ui.ciCombo({
         name: 'server',
@@ -7,6 +8,13 @@
         fieldLabel: _('Server'),
         allowBlank: false,
         with_vars: 1
+    });
+
+    var userTextField = Cla.ui.textField({
+        name: 'user',
+        fieldLabel: _('User'),
+        value: data.user || '',
+        allowBlank: true
     });
 
     var portType = Cla.ui.comboBox({
@@ -35,10 +43,24 @@
         allowBlank: true
     });
 
+    var errorBox = Cla.ui.errorManagementBox({
+        errorTypeName: 'errors',
+        errorTypeValue: params.data.errors || 'fail',
+        rcOkName: 'rcOk',
+        rcOkValue: params.data.rcOk,
+        rcWarnName: 'rcWarn',
+        rcWarnValue: params.data.rcWarn,
+        rcErrorName: 'rcError',
+        rcErrorValue: params.data.rcError,
+        errorTabsValue: params.data
+    });
+
     return [
         server,
+        userTextField,
         portType,
         initPort,
-        endPort
+        endPort,
+        errorBox
     ]
 })

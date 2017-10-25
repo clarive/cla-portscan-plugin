@@ -4,18 +4,45 @@ reg.register('service.port.scan', {
     name: _('Open Ports Scanner'),
     icon: '/plugin/cla-portscan-plugin/icon/portscan.svg',
     form: '/plugin/cla-portscan-plugin/form/portscan-form.js',
+    rulebook: {
+        moniker: 'ports_scanner',
+        description: _('Executes the ports scanner'),
+        required: ['server', 'port_type'],
+        allow: ['server', 'user', 'port_type', 'init_port', 'end_port', 'errors'],
+        mapper: {
+            'port_type': 'portType',
+            'init_port': 'initPort',
+            'end_port': 'endPort'
+        },
+        examples: [{
+            ports_scanner: {
+                server: 'scan_server',
+                user: 'clarive_user',
+                port_type: ["TCP", "UDP"],
+                init_port: "1",
+                end_port: "65535",
+                errors: "fail"
+            }
+        }]
+    },
     handler: function(ctx, config) {
 
         var ci = require("cla/ci");
         var log = require('cla/log');
         var fs = require('cla/fs');
+        var reg = require('cla/reg');
 
-        var initPort = Number(config.initPort);
-        var endPort = Number(config.endPort);
+        var initPort = Number(config.initPort || "1");
+        var endPort = Number(config.endPort || "65535");
+        var user = config.user || "";
+        var server = config.server;
+        var errors = config.errors || "fail";
+
         var scanServer = ci.findOne({
-            mid: config.server + ''
+            mid: server + ''
         });
-        if (!scanServer){
+
+        if (!scanServer) {
             log.fatal(_("Server CI doesn't exist"));
         }
         var scanRangeServer = ' -p ' + initPort + '-' + endPort + ' ' + scanServer.hostname;
@@ -46,27 +73,41 @@ reg.register('service.port.scan', {
             return ports;
         };
 
-        var scanPorts = function(scanCommand, type) {
-            var local = ci.build('GenericServer', {
-                name: "localhost",
-                hostname: "localhost"
+        function remoteCommand(config, command, server, errors, user) {
+            var output = reg.launch('service.scripting.remote', {
+                name: _('Node.js execute'),
+                config: {
+                    errors: errors,
+                    server: server,
+                    user: user,
+                    path: command,
+                    output_error: config.output_error,
+                    output_warn: config.output_warn,
+                    output_capture: config.output_capture,
+                    output_ok: config.output_ok,
+                    meta: config.meta,
+                    rc_ok: config.rcOk,
+                    rc_error: config.rcError,
+                    rc_warn: config.rcWarn
+                }
             });
-            var agent = local.connect()
-            agent.execute(scanCommand);
-            var response = agent.tuple().output;
-            var ports = parseNmapOutput(type, response);
+            return output;
+        }
 
-            if (agent.tuple().rc != 0) {
+        var scanPorts = function(scanCommand, type) {
+            var response = remoteCommand(config, scanCommand, server, errors, user);
+            var ports = parseNmapOutput(type, response.output);
+
+            if (response.rc != 0) {
                 log.fatal(_("Error with nmap: "), response);
             } else if (ports.length == 0) {
-                log.error(_("No open ports in the server for ") + type + ' ', response);
+                log.error(_("No open ports in the server for ") + type + ' ', response.output);
             } else {
-                log.info(ports.length + _(" Port(s) found for ") + type + ' ', response);
+                log.info(ports.length + _(" Port(s) found for ") + type + ' ', response.output);
             }
             return ports;
         };
-
-        if (initPort == NaN || endPort == NaN) {
+        if (initPort + "" == "NaN" || endPort + "" == "NaN") {
             log.fatal(_("Uncorrect ports: ") + initPort + " " + endPort);
         }
         if (initPort > 65535) {
@@ -76,7 +117,7 @@ reg.register('service.port.scan', {
             log.fatal(_("Finishing port can't overpass 65535: ") + endPort);
         }
         if (initPort > endPort) {
-            log.error(_("Starting Port is bigger than finishing Port. "));
+            log.fatal(_("Starting Port is bigger than finishing Port. "));
         }
 
 
