@@ -1,6 +1,6 @@
 # Port Scan Plugin
 
-<img src="https://cdn.rawgit.com/clarive/cla-portscan-plugin/master/public/icon/portscan.svg?sanitize=true" alt="PortScan Plugin" title="PortScan Plugin" width="120" height="120">
+<img src="https://cdn.jsdelivr.net/gh/clarive/cla-portscan-plugin/public/icon/portscan.svg?sanitize=true" alt="PortScan Plugin" title="PortScan Plugin" width="120" height="120">
 
 Port Scan Plugin is designed check open ports on a remote server using nmap.
 
